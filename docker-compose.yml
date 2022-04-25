@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  dwoole:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./app:/app
+    ports:
+      - 9501:9501
+    environment:
+      ENTRY_POINT_FILE: "/app/bin/hyperf.php"
+      ENTRY_CMD: "start"
+
+  redis:
+    image: leyume/redis
+    ports:
+      - "6380:6379"
+    command: redis-server --loadmodule /usr/lib/redis/modules/rejson.so --appendonly yes
+    volumes:
+      - "./data/redis:/data"
+    restart: always
